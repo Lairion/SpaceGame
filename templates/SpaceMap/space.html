@@ -1,0 +1,6 @@
+{% extends "base.html"%}
+{% block content %}
+{%for SpaceSystem in SpaceSystems %}
+<div style="position:absolute; width: 10px;height: 10px; border-radius:50%;left:{{SpaceSystem.pos_x}}; top:{{SpaceSystem.pos_y}}; background-color:red"></div>
+{%endfor%}
+{% endblock content %}
