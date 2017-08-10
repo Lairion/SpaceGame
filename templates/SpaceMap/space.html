@@ -1,6 +1,31 @@
+
 {% extends "base.html"%}
+{% load staticfiles %}
+{% block title%} {{title}}{% endblock title%}
+{% block CSS%}
+<link rel="stylesheet" href="{% static 'css/spacecss.css' %}">
+{% endblock CSS%}
 {% block content %}
 {%for SpaceSystem in SpaceSystems %}
-<div style="position:absolute; width: 10px;height: 10px; border-radius:50%;left:{{SpaceSystem.pos_x}}px; top:{{SpaceSystem.pos_y}}px; background-color:red"></div>
+<div class="star" style="position:absolute; width: 5px;height: 5px; border-radius:50%;left:{{SpaceSystem.pos_x}}px; top:{{SpaceSystem.pos_y}}px; background-color:{{SpaceSystem.color}}
+">
+	<div class="info_window" >
+	<h3>Name:{{SpaceSystem.name_system}}</h3>
+		<p>Size:{{SpaceSystem.size}}</p>
+		<p>Temp:{{SpaceSystem.temp}}</p>
+		<p>Mass:{{SpaceSystem.mass}}</p>
+	</div>
+</div>
+<!-- <script>
+$(document).ready(
+	function (){
+		$(".star").hover(
+			function(){
+				$(this).find(".info_window").show()
+			}
+		)
+	}
+	)
+</script> -->
 {%endfor%}
 {% endblock content %}

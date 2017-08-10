@@ -1,0 +1,17 @@
+body
+{
+	background-color: #000000 
+}
+.star{
+	position: relative;
+}
+.star:hover .info_window{
+	display: block;
+}
+.info_window{
+	display: none; 
+	position: fixed;
+	top: 10px;
+	width: 300px;
+	background-color:rgba(204, 255, 153,0.4);
+}
