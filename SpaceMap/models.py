@@ -11,7 +11,7 @@ class StarSystem(models.Model):
 		('#ccff99','Green')
 		)
 	pos_x=models.IntegerField()
-	pos_y =models.IntegerField()
+	pos_y=models.IntegerField()
 	size =models.FloatField(null=True, blank=True)
 	color = models.CharField(max_length=8, choices=STAR_COLORS)
 	temp = models.FloatField(null=True, blank=True)
