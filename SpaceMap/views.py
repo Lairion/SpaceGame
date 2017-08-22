@@ -10,11 +10,13 @@ def space_view(request):
 	return render(request,"SpaceMap/space.html",context)
 def system_view(request,id):
 	star = StarSystem.objects.get(id=int(id))
+	print(request.user)
 	planets = Planet.objects.filter(star_system=star)
 	context = {
-		'title':"SpaceMap", 
-		"SpaceSystems":star_systems
+		'title':"System "+ star.name_system, 
+		"Star": star,
+		"Planets": planets
 	}
-	return render(request,"SpaceMap/space.html",context)
+	return render(request,"SpaceMap/system.html",context)
 
 	

@@ -7,21 +7,23 @@
 {% endblock CSS%}
 {% block content %}
 {%for SpaceSystem in SpaceSystems %}
-<div class="star" style="position:absolute; width: 5px;height: 5px; border-radius:50%;left:{{SpaceSystem.pos_x}}px; top:{{SpaceSystem.pos_y}}px; background-color:{{SpaceSystem.color}}
-">
-	<div class="info_window" >
-	<h3>Name:{{SpaceSystem.name_system}}</h3>
-		<p>Size:{{SpaceSystem.size}}</p>
-		<p>Temp:{{SpaceSystem.temp}}</p>
-		<p>Mass:{{SpaceSystem.mass}}</p>
+<a href ="{{SpaceSystem.get_absolute_url}}"  data-id = {{SpaceSystem.id}}>
+	<div class="star" style="position:absolute; width: 5px;height: 5px; border-radius:50%;left:{{SpaceSystem.pos_x}}px; top:{{SpaceSystem.pos_y}}px; background-color:{{SpaceSystem.color}}
+	">
+		<div class="info_window" >
+		<h3>Name:{{SpaceSystem.name_system}}</h3>
+			<p>Size:{{SpaceSystem.size}}</p>
+			<p>Temp:{{SpaceSystem.temp}}</p>
+			<p>Mass:{{SpaceSystem.mass}}</p>
+		</div>
 	</div>
-</div>
+</a>
 <!-- <script>
 $(document).ready(
 	function (){
-		$(".star").hover(
+		$("[data-id]").click(
 			function(){
-				$(this).find(".info_window").show()
+				$(this).submit()
 			}
 		)
 	}

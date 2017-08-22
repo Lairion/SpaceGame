@@ -1,0 +1,16 @@
+{% extends "base.html"%}
+{% load staticfiles %}
+{% block content %}
+	<div class="info_star_system">
+		<p>Name system: {{Star.name_system}}</p>
+		<p>Size: {{Star.size}}</p>
+		<p>Mass: {{Star.mass}}</p>
+		<p>Temp: {{Star.temp}}</p>
+		<p>Size:{{Star.size}}</p>
+		{% if Planets %}
+			<p>Planets: 
+			{%for planet in Planets%}
+			{{planet.name_planet}},  {% endfor%}</p>
+		{% endif %}
+	</div>
+{% endblock content%}
