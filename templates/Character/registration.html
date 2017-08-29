@@ -1,0 +1,12 @@
+{% extends "base.html"%}
+{% load staticfiles %}
+{% block content %}
+	<form action="/register/post" method="post">
+	{% csrf_token %}
+		<p>Username: <input type="text" name="user_name"></p>
+		<p>e-mail: <input type="text" name="e-mail"></p>
+		<p>Password: <input type="text" name="password"></p>
+		<button type="submit" class="btn btn-danger">Registration</button>
+	</form>
+	
+{% endblock content %}
