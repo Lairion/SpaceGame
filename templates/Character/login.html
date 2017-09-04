@@ -1,12 +1,26 @@
 {% extends "base.html"%}
 {% load staticfiles %}
+{% block CSS%}
+<link rel="stylesheet" href="{%static 'css/loginstyle.css'%}">
+{% endblock CSS%}
 {% block content %}
-	<form action="/login/post" method="post">
+<div class="flex_all_middle">
+	<div>
+		<form action="/login/post" method="post">
 	{% csrf_token %}
-		<p>Username: <input type="text" name="user_name"></p>
-		<p>Password: <input type="text" name="password"></p>
-		<button type="submit" class="btn btn-danger">Sign in</button>
+		<fieldset>
+			<h2>Login</h2>
+			<p>Username: <input type="text" name="user_name"></p>
+			<p>Password: <input type="text" name="password"></p>
+			<button class = "glowBtn" type="submit">Sign in</button>
+		</fieldset>
+		
 	</form>
-	<a href="/register/"><button type="submit" class="btn btn-success">Sign up</button></a>
+	<a href="/register/"><button type="submit" class="superBtn" style="float:bottom">Sign up</button></a>
+	</div>
+</div>
+	
+	
+	
 	
 {% endblock content %}
