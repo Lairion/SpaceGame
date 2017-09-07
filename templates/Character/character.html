@@ -1,11 +1,14 @@
 {% extends "base.html"%}
 {% load staticfiles %}
+{% block css %}
+<link rel="stylesheet" href="{%static 'css/loginstyle.css'%}">
+{% endblock css %}
 {% block content %}
 {%if request.user.is_staff%}
 Привет Staff!!!
 {%endif%}
 	<a href="/logout/">
-		<button class="btn btn-danger">Logout</button>
+		<button class="superBtn">Logout</button>
 	</a>
 	{{ request.user }}
 	{% for character in characters%}
@@ -15,6 +18,8 @@
 			<p>{{ character.level }}</p>
 			<p>{{ character.exp }}</p>
 			<p>{{ character.points }}</p>
+
+			<img src="{{character.image.url}}" alt="">
 		</div>
 		
 	{% endfor%}
