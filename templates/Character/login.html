@@ -1,6 +1,9 @@
 {% extends "base.html"%}
 {% load staticfiles %}
 {% block content %}
+{% if request.user.is_anonymous%}
+	Не зарегистрируешся!!! Умрешь через 7 дней.
+{% endif %}
 	<form action="/login/post" method="post">
 	{% csrf_token %}
 		<p>Username: <input type="text" name="user_name"></p>

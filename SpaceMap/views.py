@@ -3,6 +3,7 @@ from .models import StarSystem,Planet
 # Create your views here.
 def space_view(request):
 	star_systems = StarSystem.objects.all()
+	print(request.user)
 	context = {
 		'title':"SpaceMap", 
 		"SpaceSystems":star_systems

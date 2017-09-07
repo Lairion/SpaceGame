@@ -6,6 +6,9 @@
 <link rel="stylesheet" href="{% static 'css/spacecss.css' %}">
 {% endblock CSS%}
 {% block content %}
+{% if request.user.is_anonymous %}
+	<p style="color: white">Не зарегистрируешся!!! Умрешь через 7 дней.</p>
+{% endif %}
 {%for SpaceSystem in SpaceSystems %}
 <a href ="{{SpaceSystem.get_absolute_url}}"  data-id = {{SpaceSystem.id}}>
 	<div class="star" style="position:absolute; width: 5px;height: 5px; border-radius:50%;left:{{SpaceSystem.pos_x}}px; top:{{SpaceSystem.pos_y}}px; background-color:{{SpaceSystem.color}}
