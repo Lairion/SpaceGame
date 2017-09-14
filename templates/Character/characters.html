@@ -1,0 +1,29 @@
+{% extends "base.html"%}
+{% load staticfiles %}
+{% block css %}
+<link rel="stylesheet" href="{%static 'css/loginstyle.css'%}">
+{% endblock css %}
+{% block content %}
+{%if request.user.is_staff%}
+Привет Staff!!!
+{%endif%}
+	<a href="/logout/">
+		<button class="superBtn">Logout</button>
+	</a>
+	{{ request.user }}
+	{% for character in characters%}
+		<div>
+
+			<p>{{ character.name_character }}</p>
+			<p>{{ character.level }}</p>
+			<p>{{ character.exp }}</p>
+			<p>{{ character.points }}</p>
+			<a href="{{character.get_absolute_url}}">
+			<button>Details</button>
+			</a>
+
+			
+		</div>
+		
+	{% endfor%}
+{% endblock content %}

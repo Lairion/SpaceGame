@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect,HttpResponse
-from .models import Character
+from .models import Ship,Character,Engine,Engine_ship,Laser,Laser_ship
 # Create your views here.
 @csrf_protect
 def register_in_site_post(request):
@@ -50,12 +50,23 @@ def character_page(request):
 	characters = Character.objects.filter(
 		user_id=request.user)
 	context = {
-		"title":"Character.html",
+		"title":"Characters",
 		"characters":characters
+	}
+	return render(request,"Character/characters.html",context)
+
+def character(request,id):
+	character = Character.objects.get(id=int(id))
+	ships = Ship.objects.filter(character_id=character)
+	context = {
+		"title":"Character",
+		"character":character,
+		"ships": ships
 	}
 	return render(request,
 		"Character/character.html",
 		context)
+
 
 
 
