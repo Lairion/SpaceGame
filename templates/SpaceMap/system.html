@@ -12,5 +12,28 @@
 			{%for planet in Planets%}
 			{{planet.name_planet}},  {% endfor%}</p>
 		{% endif %}
+		{% if status%}
+		<a href=""><button>Go here</button></a>
+		{% endif %}
+
+	</div>
+	<div>
+	 	<form action="/prepare/" method="GET">
+	 		{% if not status%}
+				Player:{{character.name}}
+				<input type="hidden" name="player_id" value="{{character.id}}">
+				<select name="enemy_id" >
+					{% for enemy in ships %}
+						{% if enemy.character_id != character.id %}
+						<option value="{{enemy.id}}">
+							{{enemy.character_id.name_character}},{{enemy.id}}
+						</option>
+						{% endif %}
+					{% endfor %}
+				</select>
+				<button>Àttack</button>
+			{% endif %}
+	 		
+	 	</form>
 	</div>
 {% endblock content%}

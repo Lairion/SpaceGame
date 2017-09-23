@@ -7,7 +7,11 @@ from .views import (
             character_page,
             login_in_site,
             logout_in_site,
-            character)
+            character,
+            ship_interface,
+            catch_defaul_parameters,
+            fight
+            )
 urlpatterns = [
     url(r'^register/$', registration, name="registration" ),
     url(r'^register/post$',register_in_site_post, name="post_registration"),
@@ -16,4 +20,7 @@ urlpatterns = [
     url(r'^login/post$', login_in_site, name="login_post" ),
     url(r'^characters/$', character_page, name="characters" ),
     url(r'^character/(?P<id>[\w-]+)$', character, name="character" ),
+    url(r'^ship/(?P<id>[\w-]+)$', ship_interface, name="ship_interface" ),
+    url(r'^prepare/$', catch_defaul_parameters , name="prepare" ),
+    url(r'^fight/$', fight , name="fight" ),
 ]

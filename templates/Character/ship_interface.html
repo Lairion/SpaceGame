@@ -1,0 +1,28 @@
+{% extends "base.html"%}
+{% load staticfiles %}
+{% block content %}
+<header>
+	<a href="/space/">Jump</a>
+</header>
+<div style="color:White">
+	<p>Captan:{{ship.character_id.name_character}}</p>
+	<p>Name:{{ship.name_ship}}</p>
+	<p>Class:{{ship.ship_class}},
+	{% for class in ship.SHIP_CLASS %}
+		{% if class.0 == ship.ship_class %}
+			{{class.1}}
+		{% endif %}
+	{% endfor %}</p>
+	<p>Armor:{{ship.armor}}</p>
+	<p>Laser(s):{%for laser in lasers %}{{laser}}{% endfor %}</p>
+	<p>Engine:{{ engine.name_engine }}</p>
+	
+	<p>Position</p>
+
+	Star System: <a href="{{ship.system_id.get_absolute_url}}">		{{ship.system_id.name_system}}
+	</a>
+	Planet: {{ship.planet_id.name_system}}
+	City: {{ship.city_id.name_system}}
+</div>
+
+{% endblock content%}

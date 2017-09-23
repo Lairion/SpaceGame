@@ -55,6 +55,30 @@ def character_page(request):
 	}
 	return render(request,"Character/characters.html",context)
 
+def catch_defaul_parameters(request):
+	player_ship_id = request.GET.get("player_id")
+	enemy_ship_id = request.GET.get("enemy_id")
+	player_ship_id = Ship.objects.get(id=int(player_ship_id))
+	enemy_ship_id = Ship.objects.get(id=int(enemy_ship_id))
+	request.session.__setitem__("Fight")
+	request.session["Fight"] = {
+		'round':"1",
+		'player_ship': str(player_ship_id.id),
+		'enemy_ship': str(enemy_ship_id.id)
+	}
+	return HttpResponseRedirect("/fight/")
+def fight(request):
+	player_ship_id = Ship.objects.get(id=int(request.session["player_ship"]))
+	enemy_ship_id = Ship.objects.get(id=int(request.session["enemy_ship"]))
+	context = {
+		'player_ship':player_ship_id,
+		'enemy_ship':enemy_ship_id,
+		}
+	return render(request,
+		"Character/fight.html",
+		context)
+
+
 def character(request,id):
 	character = Character.objects.get(id=int(id))
 	ships = Ship.objects.filter(character_id=character)
@@ -63,8 +87,24 @@ def character(request,id):
 		"character":character,
 		"ships": ships
 	}
+	print(request.session.get("round"))
 	return render(request,
 		"Character/character.html",
+		context)
+def ship_interface(request,id):
+	ship = Ship.objects.get(id=int(id))
+	lasers = Laser_ship.objects.filter(ship_id=ship)
+	engine = Engine_ship.objects.filter(ship_id=ship)
+	context = {
+		"title":"Ship",
+		"ship":ship,
+		"lasers": lasers,
+		"engine": engine
+	}
+	request.session.__setitem__("round","1")
+	print(request.session.get("round"))
+	return render(request,
+		"Character/ship_interface.html",
 		context)
 
 

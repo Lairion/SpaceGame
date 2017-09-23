@@ -1,6 +1,10 @@
 {% extends "base.html"%}
 {% load staticfiles %}
 {% block content %}
-Hello!!!
+{% for ship in ships %}
+<a href="{{ship.get_absolute_url}}">
+	{{ship.name_ship}}
+</a>
+{% endfor %}
 
 {% endblock content %}

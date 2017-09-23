@@ -1,15 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from SpaceMap.models import StarSystem,Planet,City
 # Create your models here.
 class Character(models.Model):
-    user_id = models.ForeignKey(User)
+    user_id = models.ForeignKey(User,null=True, blank=True)
     name_character = models.CharField(max_length=100)
     level = models.IntegerField(default = 1)
     exp = models.IntegerField(default = 0)
     points = models.IntegerField(default= 0)
     image = models.ImageField(null=True, blank=True, upload_to='character_image/%Y/%m/%d')
     credits = models.IntegerField(default= 1000)
+    is_active = models.BooleanField(default=False)
     def __str__(self):
         return self.name_character
     def get_absolute_url(self):
@@ -37,7 +39,10 @@ class Character(models.Model):
 
 class Ship(models.Model):
     """docstring for Ship"""
-    character_id = models.ForeignKey(Character)
+    character_id = models.ForeignKey(Character,null=True, blank=True)
+    system_id = models.ForeignKey(StarSystem,null=True, blank=True)
+    planate_id = models.ForeignKey(Planet,null=True, blank=True)
+    city_id = models.ForeignKey(City,null=True, blank=True)
     SHIP_CLASS = (("DR","DRAGUN"),
         ("HS","HeavyShip"),
         ("MD","Medical"),("CG","CargoShip"))
@@ -46,30 +51,32 @@ class Ship(models.Model):
     armor = models.IntegerField(default=400)
     load = models.IntegerField(default=10000)
     laser_count = models.IntegerField(default=1)
-    evasion = models.IntegerField(default=400)
+    evasion = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name_ship
+    def get_absolute_url(self):
+        return reverse("Character:ship_interface", kwargs={"id": self.id})
 
     def change_characteristic(self):
         if self.ship_class == "DR":
             self.armor = 200
-            self.evasion = 1000
+            self.evasion = 12
             self.laser_count = 6
             self.load = 400
         elif self.ship_class == "HS":
             self.armor = 1000
-            self.evasion = 200
+            self.evasion = 4
             self.laser_count = 10
             self.load = 1200
         elif self.ship_class == "MD":
             self.armor = 500 
-            self.evasion = 500
+            self.evasion = 10
             self.laser_count = 4
             self.load = 800
         elif self.ship_class == "CG":
             self.armor = 600 
-            self.evasion = 300
+            self.evasion = 8
             self.laser_count = 2
             self.load = 1500
         self.save()
