@@ -4,6 +4,8 @@ from django.urls import reverse
 from SpaceMap.models import StarSystem,Planet,City
 # Create your models here.
 class Character(models.Model):
+    DICE = ((4,'Four'),(6,'Six'),(8,"Eight"),(10,"Ten"),(12,"twelve"))
+
     user_id = models.ForeignKey(User,null=True, blank=True)
     name_character = models.CharField(max_length=100)
     level = models.IntegerField(default = 1)
@@ -12,6 +14,10 @@ class Character(models.Model):
     image = models.ImageField(null=True, blank=True, upload_to='character_image/%Y/%m/%d')
     credits = models.IntegerField(default= 1000)
     is_active = models.BooleanField(default=False)
+
+    accurancy = models.IntegerField(default=4,choices=DICE)
+    defence = models.IntegerField(default=4,choices=DICE)
+
     def __str__(self):
         return self.name_character
     def get_absolute_url(self):
@@ -61,7 +67,7 @@ class Ship(models.Model):
     def change_characteristic(self):
         if self.ship_class == "DR":
             self.armor = 200
-            self.evasion = 12
+            self.evasion = 4
             self.laser_count = 6
             self.load = 400
         elif self.ship_class == "HS":
@@ -90,7 +96,7 @@ class Engine_ship(models.Model):
     ship_id = models.ForeignKey(Ship,null=True, blank=True)
     price = models.DecimalField(max_digits=19, decimal_places=2)
     name_engine = models.CharField(max_length=100)
-    power = models.IntegerField(default=1000)
+    power = models.IntegerField(default=1)
     durability = models.IntegerField(default=1000)
     tank = models.IntegerField(default=0)
     weight = models.IntegerField(default=500)
@@ -101,7 +107,7 @@ class Engine(models.Model):
     """docstring for Engine"""
     price = models.DecimalField(max_digits=19, decimal_places=2)
     name_engine = models.CharField(max_length=100)
-    power = models.IntegerField(default=1000)
+    power = models.IntegerField(default=1)
     durability = models.IntegerField(default=1000)
     tank = models.IntegerField(default=0)
     weight = models.IntegerField(default=500)
@@ -114,6 +120,7 @@ class Laser_ship(models.Model):
     price = models.DecimalField(max_digits=19, decimal_places=2)
     name_laser = models.CharField(max_length=100)
     power = models.IntegerField(default=1000)
+    mobility = models.IntegerField(default=1)
     durability = models.IntegerField(default=1000)
     weight = models.IntegerField(default=500)
     def __str__(self):
@@ -124,6 +131,7 @@ class Laser(models.Model):
     price = models.DecimalField(max_digits=19, decimal_places=2)
     name_laser = models.CharField(max_length=100)
     power = models.IntegerField(default=1000)
+    mobility = models.IntegerField(default=1)
     durability = models.IntegerField(default=1000)
     weight = models.IntegerField(default=500)
     def __str__(self):

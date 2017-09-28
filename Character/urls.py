@@ -10,7 +10,10 @@ from .views import (
             character,
             ship_interface,
             catch_defaul_parameters,
-            fight
+            fight,
+            attack,
+            defence,
+            choice_result
             )
 urlpatterns = [
     url(r'^register/$', registration, name="registration" ),
@@ -22,5 +25,8 @@ urlpatterns = [
     url(r'^character/(?P<id>[\w-]+)$', character, name="character" ),
     url(r'^ship/(?P<id>[\w-]+)$', ship_interface, name="ship_interface" ),
     url(r'^prepare/$', catch_defaul_parameters , name="prepare" ),
-    url(r'^fight/$', fight , name="fight" ),
+    url(r'^fight/$', fight, name="fight" ),
+    url(r'^attack/$', attack, name="attack" ),
+    url(r'^defence/$', defence, name="defence" ),
+    url(r'^choice_result/$', choice_result, name="choice_result" ),
 ]

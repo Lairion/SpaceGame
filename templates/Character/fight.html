@@ -1,11 +1,64 @@
 {% extends "base.html"%}
 {% load staticfiles %}
+<style>	
+		body {
+			color: white; 
+		}
+</style>
 {% block content %}
-<div>
-	{{player_ship.name}}	
+{{player_ship.name_ship}}
+{% if request.session.fight.wait_result %}
+
+<form action="/check_result/">
+	<div class="check_result" style="color: white;display: none;">
+		
+		<input type="radio" name="throw" value="6">6 <br />	
+		
+		{% if request.session.fight.status == 'defence' %}
+			<input type="radio" name="throw" value="{{player_ship.character_id.defence}}">
+			{{player_ship.character_id.defence}}
+		{% else %}
+		<input type="radio" name="throw"  value="{{player_ship.character_id.accurancy}}">
+			{{player_ship.character_id.accurancy}}
+		{% endif %}
+		<button type="submit">
+			Check
+		</button>
+		6:{{request.session.fight.enemy_points.0}}
+	{% if request.session.fight.status == 'defence' %}
+		{{player_ship.character_id.defence}}
+		
+	{% else %}
+		{{player_ship.character_id.accurancy}}
+	{% endif %}
+	:{{request.session.fight.enemy_points.1}}	
+	</div>
+</form>
+{% endif %}
+<div style="color: white">
+	{{enemy_ship.name_ship}} <br/>
+	6:{{request.session.fight.enemy_points.0}} <br/>
+	{% if request.session.fight.status == 'attack' %}
+		{{enemy_ship.character_id.defence}}
+		
+	{% else %}
+		{{enemy_ship.character_id.accurancy}}
+	{% endif %}
+	:{{request.session.fight.enemy_points.1}}	
 </div>
+{% if not request.session.fight.wait_result %}
 <div>
-	{{enemy_ship.name}}	
+	
+	{% if request.session.fight.status == "defence"%}
+	<form action="/defence/">
+		<button type="submit">Defence</button>
+	</form>
+	{%else%}
+	<form action="/attack/">
+		<button type="submit">Attack</button>
+	</form>
+	{%endif%}
 </div>
+{% endif %}
 
 {% endblock content%}

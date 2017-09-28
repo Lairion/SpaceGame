@@ -11,6 +11,7 @@ def space_view(request):
 	}
 	return render(request,"SpaceMap/space.html",context)
 def system_view(request,id):
+	print(request.session["Fight"])
 	star = StarSystem.objects.get(id=int(id))
 	character = Character.objects.get(user_id=request.user,is_active=True)
 	ships = Ship.objects.filter(system_id=star)
@@ -19,18 +20,18 @@ def system_view(request,id):
 		'title':"System "+ star.name_system, 
 		"Star": star,
 		"Planets": planets,
-		"ships": ships
+		"ships": ships,
+		
 	}
-	try:
-		ship_character = Ship.objects.get(character_id=character,
+	ship_character = Ship.objects.filter(character_id=character,
 			system_id=star)
+	if len(ship_character)>0:
 		status=False
-		print(1)
-		context.update({"status": status, "character":ship_character})	
-	except:
-		print(2)
+		context.update({"character":character})	
+	else:
 		status=True
-		context.update({"status": status})
+	context.update({"status": status})
+	print(context)
 	return render(request,"SpaceMap/system.html",context)
 
 	

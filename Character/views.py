@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect,HttpResponse
 from .models import Ship,Character,Engine,Engine_ship,Laser,Laser_ship
+import random
 # Create your views here.
 @csrf_protect
 def register_in_site_post(request):
@@ -60,16 +61,108 @@ def catch_defaul_parameters(request):
 	enemy_ship_id = request.GET.get("enemy_id")
 	player_ship_id = Ship.objects.get(id=int(player_ship_id))
 	enemy_ship_id = Ship.objects.get(id=int(enemy_ship_id))
-	request.session.__setitem__("Fight")
-	request.session["Fight"] = {
-		'round':"1",
-		'player_ship': str(player_ship_id.id),
-		'enemy_ship': str(enemy_ship_id.id)
+	parameters = {
+		'round': 1,
+		'player_ship': player_ship_id.id,
+		'enemy_ship': enemy_ship_id.id,
+		"status": "defence",
+		"player_points":[0,0],
+		"enemy_points":[0,0],
+		"player_bonus": [0,0],
+		"enemy_bonus": [0,0],
+		"wait_result": False
+
 	}
+	request.session.__setitem__("Fight",parameters)
+
 	return HttpResponseRedirect("/fight/")
+
+def self_random(dice):
+	result = random.randint(1,dice)
+	if result == dice:
+		result+=self_random(dice)
+	return result
+
+def attack(request):
+	
+	session = request.session["Fight"]
+	print(session)
+	player_ship_id = Ship.objects.get(id=int(session["player_ship"]))
+	enemy_ship_id = Ship.objects.get(id=int(session["enemy_ship"]))
+	session['player_points'][0] = self_random(6)
+	session['player_points'][1] = self_random(player_ship_id.character_id.accurancy)
+	session['enemy_points'][0] =self_random(6)
+	session['enemy_points'][1] = self_random(enemy_ship_id.character_id.defence)
+	session['player_bonus'][0] = session['player_points'][0]//6
+	session['player_bonus'][1] = session['player_points'][1]//player_ship_id.character_id.accurancy
+	session['wait_result'] = True
+	request.session.__setitem__('Fight',session)
+	return HttpResponseRedirect("/fight/")
+	# return HttpResponse('Thanks for your comment!')
+
+def defence(request):
+	session = request.session["Fight"]
+	print(session)
+	player_ship_id = Ship.objects.get(id=int(session["player_ship"]))
+	enemy_ship_id = Ship.objects.get(id=int(session["enemy_ship"]))
+	session['player_points'][0] = self_random(6)
+	session['player_points'][1] = self_random(player_ship_id.character_id.defence)
+	session['enemy_points'][0] =self_random(6)
+	session['enemy_points'][1] = self_random(enemy_ship_id.character_id.accurancy)
+	session['enemy_bonus'][0] = session['enemy_points'][0]//6
+	session['enemy_bonus'][1] = session['enemy_points'][1]//player_ship_id.character_id.accurancy
+	session['wait_result'] = True
+	return HttpResponseRedirect("/fight/")
+
+def check_throws(attack,defence):
+	if attack>defence:
+		return True
+	else:
+		return False 
+def catch_bonus(throw,points,bonus):
+	a = point.index(throw)
+	return bonus[a]
+
+def choice_result(request):
+	session = request.session["Fight"]
+	player_throw = int(request.GET.get("throw"))
+	enemy_throw = max(session['enemy_points'])
+	if session['status'] == 'defence':
+
+		enemy_ship = Ship.objects.get(id=int(session["enemy_ship"]))
+		player_ship = Ship.objects.get(id=int(session["player_ship"]))
+		enemy_is_successful = check_throws(enemy_throw,player_throw)
+		if enemy_is_successful:
+			lasers = Laser_ship.objects.filter(ship_id = enemy_ship)
+			damage = sum([laser.power for laser in lasers])
+			player_ship.armor -= damage + (damage * catch_bonus(enemy_throw,
+				session['enemy_points'],
+				session['enemy_bonus']))
+			player_ship.save()
+		session['status'] = 'attack'
+	else:
+		enemy_ship = Ship.objects.get(id=int(session["enemy_ship"]))
+		player_ship = Ship.objects.get(id=int(session["player_ship"]))
+		player_is_successful = check_throws(player_throw,enemy_throw)
+		if player_is_successful:
+			lasers = Laser_ship.objects.filter(ship_id = player_ship)
+			damage = sum([laser.power for laser in lasers])
+			enemy_ship.armor -= damage + (damage * catch_bonus(player_throw,
+				session['player_points'],
+				session['player_bonus']))
+			enemy_ship.save()
+		session['status'] = 'defence'
+
+	return HttpResponseRedirect("/fight/")
+    
+
+
+
+
+
 def fight(request):
-	player_ship_id = Ship.objects.get(id=int(request.session["player_ship"]))
-	enemy_ship_id = Ship.objects.get(id=int(request.session["enemy_ship"]))
+	player_ship_id = Ship.objects.get(id=int(request.session["Fight"]["player_ship"]))
+	enemy_ship_id = Ship.objects.get(id=int(request.session["Fight"]["enemy_ship"]))
 	context = {
 		'player_ship':player_ship_id,
 		'enemy_ship':enemy_ship_id,

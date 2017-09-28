@@ -20,11 +20,11 @@
 	<div>
 	 	<form action="/prepare/" method="GET">
 	 		{% if not status%}
-				Player:{{character.name}}
+				Player:{{character.name_character}}
 				<input type="hidden" name="player_id" value="{{character.id}}">
 				<select name="enemy_id" >
 					{% for enemy in ships %}
-						{% if enemy.character_id != character.id %}
+						{% if enemy.character_id != character %}
 						<option value="{{enemy.id}}">
 							{{enemy.character_id.name_character}},{{enemy.id}}
 						</option>
