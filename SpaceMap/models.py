@@ -31,6 +31,8 @@ class Planet(models.Model):
 	diameter = models.FloatField()
 	def __str__(self):
 		return self.name_planet
+	def get_absolute_url(self):
+		return reverse("Space:planet_view", kwargs={"id": self.id})
 class City(models.Model):
 	CITY_STATUS = (
 		("Vilage","Vilage"),
@@ -46,7 +48,9 @@ class City(models.Model):
 		choices=CITY_STATUS, 
 		default="Vilage" )
 	def __str__(self):
-		return self.name_planet
+		return self.name_city
+	def get_absolute_url(self):
+		return reverse("Space:city_view", kwargs={"id": self.id})
 
 
 	

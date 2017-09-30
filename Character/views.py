@@ -84,7 +84,6 @@ def self_random(dice):
 	return result
 
 def attack(request):
-	
 	session = request.session["Fight"]
 	player_ship_id = Ship.objects.get(id=int(session["player_ship"]))
 	enemy_ship_id = Ship.objects.get(id=int(session["enemy_ship"]))
@@ -96,7 +95,6 @@ def attack(request):
 	session['player_bonus'][1] = session['player_points'][1]//player_ship_id.character_id.accurancy
 	session['wait_result'] = True
 	request.session['Fight'] = session
-	print(request.session)
 	return HttpResponseRedirect("/fight/")
 	# return HttpResponse('Thanks for your comment!')
 
@@ -112,7 +110,6 @@ def defence(request):
 	session['enemy_bonus'][1] = session['enemy_points'][1]//player_ship_id.character_id.accurancy
 	session['wait_result'] = True
 	request.session['Fight'] = session
-	print (request.session['Fight'])
 	return HttpResponseRedirect("/fight/")
 
 def check_throws(attack,defence):
@@ -121,7 +118,7 @@ def check_throws(attack,defence):
 	else:
 		return False 
 def catch_bonus(throw,points,bonus):
-	a = point.index(throw)
+	a = points.index(int(throw))
 	return bonus[a]
 
 def choice_result(request):
@@ -153,12 +150,22 @@ def choice_result(request):
 				session['player_bonus']))
 			enemy_ship.save()
 		session['status'] = 'defence'
-
+	session['wait_result'] = False
+	request.session['Fight'] = session
 	return HttpResponseRedirect("/fight/")
     
 
 
-
+def buy_engine(request):
+	url = request.GET.get("url")
+	ship_id = request.GET.get("ship")
+	engine_id = request.GET.get("engine")
+	engine = Engine.objects.get(id=int(engine_id))
+	ship = Ship.objects.get(id=int(ship_id))
+	ship.character_id.buy_engine(engine)
+	print(dir(request.get_full_path))
+	print(request.get_full_path())
+	return HttpResponseRedirect(url)
 
 
 def fight(request):

@@ -1,39 +1,32 @@
-{% extends "base.html"%}
-{% load staticfiles %}
-{% block content %}
-	<div class="info_star_system">
-		<p>Name system: {{Star.name_system}}</p>
-		<p>Size: {{Star.size}}</p>
-		<p>Mass: {{Star.mass}}</p>
-		<p>Temp: {{Star.temp}}</p>
-		<p>Size:{{Star.size}}</p>
-		{% if Planets %}
-			<p>Planets: 
-			{%for planet in Planets%}
-			{{planet.name_planet}},  {% endfor%}</p>
-		{% endif %}
-		{% if status%}
-		<a href=""><button>Go here</button></a>
-		{% endif %}
-
-	</div>
-	<div>
-	 	<form action="/prepare/" method="GET">
-	 		{% if not status%}
-				Player:{{character.name_character}}
-				<input type="hidden" name="player_id" value="{{character.id}}">
-				<select name="enemy_id" >
-					{% for enemy in ships %}
-						{% if enemy.character_id != character %}
-						<option value="{{enemy.id}}">
-							{{enemy.character_id.name_character}},{{enemy.id}}
-						</option>
-						{% endif %}
-					{% endfor %}
-				</select>
-				<button>Àttack</button>
-			{% endif %}
-	 		
-	 	</form>
-	</div>
+{% extends "base.html"%} {% load staticfiles %} {% block content %}
+<div class="info_star_system">
+    <p>Name system: {{Star.name_system}}</p>
+    <p>Size: {{Star.size}}</p>
+    <p>Mass: {{Star.mass}}</p>
+    <p>Temp: {{Star.temp}}</p>
+    <p>Size:{{Star.size}}</p>
+    {% if Planets %}
+    <p>Planets: {%for planet in Planets%}
+        <a href="{{planet.get_absolute_url}}">{{planet.name_planet}},</a> {% endfor%}</p>
+    {% endif %} {% if status%}
+    <a href="">
+        <button>Go here</button>
+    </a>
+    {% endif %}
+</div>
+<div>
+    <form action="/prepare/" method="GET">
+        {% if not status%} Player:{{character.name_character}}
+        <input type="hidden" name="player_id" value="{{character.id}}">
+        <select name="enemy_id">
+            {% for enemy in ships %} {% if enemy.character_id != character %}
+            <option value="{{enemy.id}}">
+                {{enemy.character_id.name_character}},{{enemy.id}}
+            </option>
+            {% endif %} {% endfor %}
+        </select>
+        <button>Attack</button>
+        {% endif %}
+    </form>
+</div>
 {% endblock content%}

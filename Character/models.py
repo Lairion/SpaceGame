@@ -28,10 +28,11 @@ class Character(models.Model):
             self.credits -= engine.price
             ship = Ship.objects.get(character_id = self)
             ship_engine = Engine_ship.objects.filter(ship_id = ship)
-            if ship_engine != null:
-                self.credits += ship_engine.price
-                del ship_engine
-            Engine_ship.create(ship_id = ship, 
+            print(ship_engine)
+            if len(ship_engine)>0:
+                self.credits += ship_engine[0].price
+                ship_engine[0].delete()
+            Engine_ship.objects.create(ship_id = ship, 
                     price = engine.price,
                     name_engine = engine.name_engine,
                     power = engine.power,
@@ -47,7 +48,7 @@ class Ship(models.Model):
     """docstring for Ship"""
     character_id = models.ForeignKey(Character,null=True, blank=True)
     system_id = models.ForeignKey(StarSystem,null=True, blank=True)
-    planate_id = models.ForeignKey(Planet,null=True, blank=True)
+    planet_id = models.ForeignKey(Planet,null=True, blank=True)
     city_id = models.ForeignKey(City,null=True, blank=True)
     SHIP_CLASS = (("DR","DRAGUN"),
         ("HS","HeavyShip"),
@@ -105,6 +106,7 @@ class Engine_ship(models.Model):
 
 class Engine(models.Model):
     """docstring for Engine"""
+    city_id = models.ForeignKey(City,null=True, blank=True)
     price = models.DecimalField(max_digits=19, decimal_places=2)
     name_engine = models.CharField(max_length=100)
     power = models.IntegerField(default=1)
@@ -128,6 +130,7 @@ class Laser_ship(models.Model):
 
 class Laser(models.Model):
     """docstring for Engine"""
+    city_id = models.ForeignKey(City,null=True, blank=True)
     price = models.DecimalField(max_digits=19, decimal_places=2)
     name_laser = models.CharField(max_length=100)
     power = models.IntegerField(default=1000)

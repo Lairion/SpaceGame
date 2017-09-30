@@ -1,0 +1,11 @@
+{% extends "base.html"%}
+{% load staticfiles %}
+{% block content %}
+<div style="color:white">
+	<a href="{{planet.star_system.get_absolute_url}}">{{planet.star_system.name_system}}</a>/{{planet.name_planet}}
+	{% for city in cities%}
+		<a href="{{city.get_absolute_url}}"> {{city.name_city}}</a>
+	{% endfor%}
+</div>
+	
+{% endblock content %}

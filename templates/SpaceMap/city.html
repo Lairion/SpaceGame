@@ -1,0 +1,17 @@
+{% extends "base.html"%}
+{% load staticfiles %}
+{% block content %}
+<div style="color: white">
+	{{city.name_city}}
+	<form action="/buy/engine">
+		<input type="hidden" name='url' value="{{city.get_absolute_url}}">
+		<input type="hidden" name='ship' value="{{ship_character.id}}">
+	{% for engine in engines %}
+		<input type="radio" id="e-{{engine.id}}" name="engine" value="{{engine.id}}">
+			<label for="e-{{engine.id}}">{{engine.name_engine}}</label>
+	{% endfor%} <br/>
+	<button class="glowbtn" type ="submit" >Buy</button>
+</form>
+</div>
+	
+{% endblock content %}

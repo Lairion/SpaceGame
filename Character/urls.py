@@ -13,7 +13,8 @@ from .views import (
             fight,
             attack,
             defence,
-            choice_result
+            choice_result,
+            buy_engine
             )
 urlpatterns = [
     url(r'^register/$', registration, name="registration" ),
@@ -29,4 +30,5 @@ urlpatterns = [
     url(r'^attack/$', attack, name="attack" ),
     url(r'^defence/$', defence, name="defence" ),
     url(r'^choice_result/$', choice_result, name="choice_result" ),
+    url(r'^buy/engine/$', buy_engine, name="buy_engine" ),
 ]
