@@ -166,7 +166,7 @@ input[type='radio'] {
 	Radio Specific Style
 -------------------- */
 input[type='radio'] + label {
-  font-family: 'ModernPictogramsNormal', Arial, sans-serif;
+  font-family: 'Lobster', Arial, sans-serif;
   font-size: 36.66667px;
   line-height: 55px;
   letter-spacing: 0;

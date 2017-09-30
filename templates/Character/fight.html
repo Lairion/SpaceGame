@@ -7,49 +7,52 @@
 </style>
 {% block content %}
 {{player_ship.name_ship}}
-{% if request.session.fight.wait_result %}
+{% if request.session.Fight.wait_result %}
 
 <form action="/check_result/">
-	<div class="check_result" style="color: white;display: none;">
-		
-		<input type="radio" name="throw" value="6">6 <br />	
-		
-		{% if request.session.fight.status == 'defence' %}
-			<input type="radio" name="throw" value="{{player_ship.character_id.defence}}">
-			{{player_ship.character_id.defence}}
+	<div class="check_result" style="color: white;">
+		<fieldset>
+		<input type="radio" id="six" name="throw" value="6">	
+		<label for='six'>6</label>
+		{% if request.session.Fight.status == 'defence' %}
+			<input type="radio" id="custom" name="throw" value="{{player_ship.character_id.defence}}">
+			<label for="custom">{{player_ship.character_id.defence}}</label>
 		{% else %}
 		<input type="radio" name="throw"  value="{{player_ship.character_id.accurancy}}">
 			{{player_ship.character_id.accurancy}}
+		<input type="radio" id="custom" name="throw" value="{{player_ship.character_id.accurancy}}">
+			<label for="custom">{{player_ship.character_id.accurancy}}</label>
 		{% endif %}
-		<button type="submit">
+		<button class ="glowBtn" type="submit">
 			Check
 		</button>
-		6:{{request.session.fight.enemy_points.0}}
-	{% if request.session.fight.status == 'defence' %}
+		6:{{request.session.Fight.enemy_points.0}}
+	{% if request.session.Fight.status == 'defence' %}
 		{{player_ship.character_id.defence}}
 		
 	{% else %}
 		{{player_ship.character_id.accurancy}}
 	{% endif %}
-	:{{request.session.fight.enemy_points.1}}	
+	:{{request.session.Fight.enemy_points.1}}
+	</fieldset>	
 	</div>
 </form>
 {% endif %}
 <div style="color: white">
 	{{enemy_ship.name_ship}} <br/>
-	6:{{request.session.fight.enemy_points.0}} <br/>
-	{% if request.session.fight.status == 'attack' %}
+	6:{{request.session.Fight.enemy_points.0}} <br/>
+	{% if request.session.Fight.status == 'attack' %}
 		{{enemy_ship.character_id.defence}}
 		
 	{% else %}
 		{{enemy_ship.character_id.accurancy}}
 	{% endif %}
-	:{{request.session.fight.enemy_points.1}}	
+	:{{request.session.Fight.enemy_points.1}}	
 </div>
-{% if not request.session.fight.wait_result %}
+{% if not request.session.Fight.wait_result == True %}
 <div>
 	
-	{% if request.session.fight.status == "defence"%}
+	{% if request.session.Fight.status == "defence"%}
 	<form action="/defence/">
 		<button type="submit">Defence</button>
 	</form>

@@ -11,7 +11,6 @@ def space_view(request):
 	}
 	return render(request,"SpaceMap/space.html",context)
 def system_view(request,id):
-	print(request.session["Fight"])
 	star = StarSystem.objects.get(id=int(id))
 	character = Character.objects.get(user_id=request.user,is_active=True)
 	ships = Ship.objects.filter(system_id=star)

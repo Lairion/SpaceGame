@@ -86,7 +86,6 @@ def self_random(dice):
 def attack(request):
 	
 	session = request.session["Fight"]
-	print(session)
 	player_ship_id = Ship.objects.get(id=int(session["player_ship"]))
 	enemy_ship_id = Ship.objects.get(id=int(session["enemy_ship"]))
 	session['player_points'][0] = self_random(6)
@@ -96,13 +95,13 @@ def attack(request):
 	session['player_bonus'][0] = session['player_points'][0]//6
 	session['player_bonus'][1] = session['player_points'][1]//player_ship_id.character_id.accurancy
 	session['wait_result'] = True
-	request.session.__setitem__('Fight',session)
+	request.session['Fight'] = session
+	print(request.session)
 	return HttpResponseRedirect("/fight/")
 	# return HttpResponse('Thanks for your comment!')
 
 def defence(request):
 	session = request.session["Fight"]
-	print(session)
 	player_ship_id = Ship.objects.get(id=int(session["player_ship"]))
 	enemy_ship_id = Ship.objects.get(id=int(session["enemy_ship"]))
 	session['player_points'][0] = self_random(6)
@@ -112,6 +111,8 @@ def defence(request):
 	session['enemy_bonus'][0] = session['enemy_points'][0]//6
 	session['enemy_bonus'][1] = session['enemy_points'][1]//player_ship_id.character_id.accurancy
 	session['wait_result'] = True
+	request.session['Fight'] = session
+	print (request.session['Fight'])
 	return HttpResponseRedirect("/fight/")
 
 def check_throws(attack,defence):
@@ -161,6 +162,8 @@ def choice_result(request):
 
 
 def fight(request):
+	print("Fight here")
+	print(request.session["Fight"])
 	player_ship_id = Ship.objects.get(id=int(request.session["Fight"]["player_ship"]))
 	enemy_ship_id = Ship.objects.get(id=int(request.session["Fight"]["enemy_ship"]))
 	context = {
